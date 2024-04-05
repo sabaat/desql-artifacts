@@ -2,12 +2,12 @@
 ## 1. Pre-requisites
 This manual assumes `docker` is installed and set up properly on your device.\
 These instructions have been tested with the following configurations: 
-* **Ubuntu:** 20.04.6 LTS\
-  **Docker:** 24.0.2, build cb74dfc
+* **MacOS:** ProductVersion: 11.2.3, BuildVersion: 20D91
+  **Docker:** 20.10.22, build 3a2c30b
 ## 2. Creating the Docker Image
 Clone this repository:
 ```
-git clone https://github.com/SEED-VT/DeSQL.git
+git clone https://github.com/sabaat/desql-artifacts.git
 ```
 Navigate into the repository folder:
 ```
