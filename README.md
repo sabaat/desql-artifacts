@@ -1,125 +1,33 @@
-# How to run standalone local cluster:
-
-To run the master:
-```shell
-./sbin/start-master.sh
+# Artifact: DeSQL: Interactive Debugging of SQL in Data-Intensive Scalable Computing
+## 1. Pre-requisites
+This manual assumes `docker` is installed and set up properly on your device.\
+These instructions have been tested with the following configurations: 
+* **Ubuntu:** 20.04.6 LTS\
+  **Docker:** 24.0.2, build cb74dfc
+## 2. Creating the Docker Image
+Clone this repository:
 ```
-To run and attach worker, one at a time: 
-```shell
-./bin/spark-class org.apache.spark.deploy.worker.Worker  spark://`hostname`:7077 -c 1 -m 512M
+git clone https://github.com/SEED-VT/DeSQL.git
+```
+Navigate into the repository folder:
+```
+cd DeSQL
+```
+Build the docker image using:
+> **_NOTE:_** If you receive a permission denied error you will need to prefix all docker commands with `sudo`. Whether or not this is needed depends on how docker is configured on your machine. A docker vulnerability warning at the end is okay and will not be an issue.
+```
+docker build -t my-custom-spark:latest -f dist/kubernetes/dockerfiles/spark/Dockerfile .
+```
+```
+docker compose up -d
+```
+> **_TROUBLESHOOTING:_** If any of the above commands fails try restarting the docker service using: `sudo systemctl restart docker`
+
+## 3. Running the DeSQL
+```
+docker exec -it spark-local-container /opt/spark/bin/spark-submit --class DeSqlPackage.SQLTest.SQLTest --master “local[*]” --conf spark.some.config.option=some-value /opt/spark/app/desqlpackage_2.12-0.1.0-SNAPSHOT.jar /opt/spark/queries/query4.sql
 ```
 
-Deploy application:
-```shell
-./bin/spark-submit  --class org.apache.spark.examples.SparkPi   --master spark://`hostname`:7077  lib/spark-examples-1.2.1-hadoop2.4.0.jar 
-```
+Here you can run all 10 queries used by DeSQL.
 
-
-# Apache Spark
-
-Spark is a unified analytics engine for large-scale data processing. It provides
-high-level APIs in Scala, Java, Python, and R, and an optimized engine that
-supports general computation graphs for data analysis. It also supports a
-rich set of higher-level tools including Spark SQL for SQL and DataFrames,
-MLlib for machine learning, GraphX for graph processing,
-and Structured Streaming for stream processing.
-
-<https://spark.apache.org/>
-
-[![Jenkins Build](https://amplab.cs.berkeley.edu/jenkins/job/spark-master-test-sbt-hadoop-2.7-hive-2.3/badge/icon)](https://amplab.cs.berkeley.edu/jenkins/job/spark-master-test-sbt-hadoop-2.7-hive-2.3)
-[![AppVeyor Build](https://img.shields.io/appveyor/ci/ApacheSoftwareFoundation/spark/master.svg?style=plastic&logo=appveyor)](https://ci.appveyor.com/project/ApacheSoftwareFoundation/spark)
-[![PySpark Coverage](https://img.shields.io/badge/dynamic/xml.svg?label=pyspark%20coverage&url=https%3A%2F%2Fspark-test.github.io%2Fpyspark-coverage-site&query=%2Fhtml%2Fbody%2Fdiv%5B1%5D%2Fdiv%2Fh1%2Fspan&colorB=brightgreen&style=plastic)](https://spark-test.github.io/pyspark-coverage-site)
-
-
-## Online Documentation
-
-You can find the latest Spark documentation, including a programming
-guide, on the [project web page](https://spark.apache.org/documentation.html).
-This README file only contains basic setup instructions.
-
-## Building Spark
-
-Spark is built using [Apache Maven](https://maven.apache.org/).
-To build Spark and its example programs, run:
-
-    ./build/mvn -DskipTests clean package
-
-(You do not need to do this if you downloaded a pre-built package.)
-
-More detailed documentation is available from the project site, at
-["Building Spark"](https://spark.apache.org/docs/latest/building-spark.html).
-
-For general development tips, including info on developing Spark using an IDE, see ["Useful Developer Tools"](https://spark.apache.org/developer-tools.html).
-
-## Interactive Scala Shell
-
-The easiest way to start using Spark is through the Scala shell:
-
-    ./bin/spark-shell
-
-Try the following command, which should return 1,000,000,000:
-
-    scala> spark.range(1000 * 1000 * 1000).count()
-
-## Interactive Python Shell
-
-Alternatively, if you prefer Python, you can use the Python shell:
-
-    ./bin/pyspark
-
-And run the following command, which should also return 1,000,000,000:
-
-    >>> spark.range(1000 * 1000 * 1000).count()
-
-## Example Programs
-
-Spark also comes with several sample programs in the `examples` directory.
-To run one of them, use `./bin/run-example <class> [params]`. For example:
-
-    ./bin/run-example SparkPi
-
-will run the Pi example locally.
-
-You can set the MASTER environment variable when running examples to submit
-examples to a cluster. This can be a mesos:// or spark:// URL,
-"yarn" to run on YARN, and "local" to run
-locally with one thread, or "local[N]" to run locally with N threads. You
-can also use an abbreviated class name if the class is in the `examples`
-package. For instance:
-
-    MASTER=spark://host:7077 ./bin/run-example SparkPi
-
-Many of the example programs print usage help if no params are given.
-
-## Running Tests
-
-Testing first requires [building Spark](#building-spark). Once Spark is built, tests
-can be run using:
-
-    ./dev/run-tests
-
-Please see the guidance on how to
-[run tests for a module, or individual tests](https://spark.apache.org/developer-tools.html#individual-tests).
-
-There is also a Kubernetes integration test, see resource-managers/kubernetes/integration-tests/README.md
-
-## A Note About Hadoop Versions
-
-Spark uses the Hadoop core library to talk to HDFS and other Hadoop-supported
-storage systems. Because the protocols have changed in different versions of
-Hadoop, you must build Spark against the same version that your cluster runs.
-
-Please refer to the build documentation at
-["Specifying the Hadoop Version and Enabling YARN"](https://spark.apache.org/docs/latest/building-spark.html#specifying-the-hadoop-version-and-enabling-yarn)
-for detailed guidance on building for a particular distribution of Hadoop, including
-building for particular Hive and Hive Thriftserver distributions.
-
-## Configuration
-
-Please refer to the [Configuration Guide](https://spark.apache.org/docs/latest/configuration.html)
-in the online documentation for an overview on how to configure Spark.
-
-## Contributing
-
-Please review the [Contribution to Spark guide](https://spark.apache.org/contributing.html)
-for information on how to get started contributing to the project.
+> **_Expected Observation:_** The DeSQL will start and logs can be seen on your console. Once the DeSQL starts, User can check the output of DeSQL at `http://localhost:4040/debugger/`. This UI of the DeSQL displays all possible sub-queries of the original query along with their respective data as it appears within Spark computations. Alongside the original query, it also displays the query plan generated by the spark for that query. Users can click any node of that plan with available sub-queries (green nodes) to see the node's respective subquery and data.
