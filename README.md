@@ -1,6 +1,4 @@
-Here's the complete content for your `README.md` file, ready for you to copy and paste:
 
-```markdown
 # DeSQL: Interactive Debugging of SQL in Data-Intensive Scalable Computing
 
 ## 1. Pre-requisites
