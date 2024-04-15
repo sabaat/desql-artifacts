@@ -11,7 +11,7 @@ These instructions have been verified with:
 
 Additionally, you'll need:
 - Python3
-- Ports 4040 and 8080 available for Spark UI and Spark Master UI, respectively.
+- Ports 4040 and 8080 available for DeSQL UI and Spark UI, respectively.
 
 ## 2. Creating the Docker Image
 
@@ -58,7 +58,7 @@ sudo systemctl restart docker
 
 ### Submit a Spark SQL Query
 
-Submit a Spark SQL job to the DeSQL container. Replace `query5.sql` with any other query file as needed:
+Submit a Spark SQL job to the DeSQL container. Replace `query5.sql` with other queries as necessary e.g `query6.sql` or `query9.sql`. It contains all DeSQL queries from 1 to 10.
 
 ```sh
 docker exec -it spark-local-container /opt/spark/bin/spark-submit \
