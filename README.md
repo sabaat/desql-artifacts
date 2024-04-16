@@ -3,7 +3,7 @@
 
 ## 1. Pre-requisites
 
-Ensure that `docker` is installed and functioning on your system. If it's not installed, please download Docker Desktop from [https://www.docker.com/products/docker-desktop/](https://www.docker.com/products/docker-desktop/).
+Ensure that `docker` is installed and running on your system. If it's not installed, please download Docker Desktop from [https://www.docker.com/products/docker-desktop/](https://www.docker.com/products/docker-desktop/).
 
 These instructions have been verified with:
 - **MacOS:** ProductVersion: 11.2.3, BuildVersion: 20D91
@@ -11,7 +11,7 @@ These instructions have been verified with:
 
 Additionally, you'll need:
 - Python3
-- Ports 4040 and 8080 available for DeSQL UI and Spark UI, respectively.
+- Ports 4040 and 8080 available for DeSQL UI and Vanilla Spark UI, respectively.
 
 ## 2. Creating the Docker Image
 
@@ -56,7 +56,7 @@ sudo systemctl restart docker
 ```
 
 ## Quick Links
-- [DeSQL Functionality](#2-running-desql)
+- [DeSQL Functionality](#3-running-desql)
 - [Results Reproducibility](#reproducibility)
 
 ## 3. Running DeSQL
