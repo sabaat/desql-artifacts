@@ -13,6 +13,15 @@ Additionally, you'll need:
 - Python3
 - Ports 4040 and 8080 available for DeSQL UI and Vanilla Spark UI, respectively.
 
+## Warning: Results Reproducibility Disclaimer
+
+Please be aware that the results reproduced here are **not** indicative of the actual overhead comparisons between DeSQL and Vanilla Spark as reported in the research paper. The reported findings in the paper were derived from a 12-node cluster, comprising 1 name node and 11 data nodes, where each node was equipped with a minimum of 8 cores at 3.10 GHz CPU, 48GB Memory, and 4TB disk space. Collectively, the cluster utilized 104 cores, 53TB of storage, and 576GB of memory.
+
+In contrast, the reproducibility exercises in this documentation have been conducted in a local mode, using a small dataset. These exercises intend to demonstrate DeSQL's functionality and not to benchmark performance. The fluctuations observed in the reproducibility graphs reflect the initialization and execution times inherent to Spark jobs, rather than the processing time related to data size. Since the demonstration uses a sample dataset with significantly fewer rows, the majority of the time measured may correspond to Spark's startup and operation rather than the processing time differential with and without DeSQL.
+
+For a more accurate comparison that reflects the operational overhead of DeSQL versus Vanilla Spark, one would need to replicate the computational environment and dataset size as described in the original research.
+
+
 ## 2. Creating the Docker Image
 
 ### Clone the Repository
